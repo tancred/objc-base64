@@ -1,4 +1,16 @@
 digraph decode {
+	// terminal states
+	node [ style = filled; fillcolor = black; color = white; fontcolor = white; ];
+	start, end, illegal
+
+	// internal states
+	node [ style = filled; fillcolor = white; color = black; fontcolor = black; ];
+	block;
+	char1, char2, char3, char4, char4pad;
+
+	// unspecified states
+	node [ style = filled; fillcolor = cyan; color = black; fontcolor = black; ];
+
 	start -> block;
 
 	block -> char1 [ label = "*" ];
