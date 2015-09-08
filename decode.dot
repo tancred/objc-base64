@@ -1,3 +1,15 @@
 digraph decode {
-	start -> end;
+	start -> block;
+
+	block -> char1 [ label = "*" ];
+
+	char1 -> char2 [ label = "alpha\nsave(c1)" ];
+
+	char2 -> char3 [ label = "alpha\nsave(c2),\nwrite(c1,c2)" ];
+
+	char3 -> char4 [ label = "alpha\nsave(c3),\nwrite(c2,c3)" ];
+
+	char4 -> block [ label = "alpha\nsave(c4),\nwrite(c3,c4)" ];
+
+	block -> end [ label = "EOF" ];
 }
