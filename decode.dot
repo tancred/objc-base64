@@ -8,8 +8,12 @@ digraph decode {
 	char2 -> char3 [ label = "alpha\nsave(c2),\nwrite(c1,c2)" ];
 
 	char3 -> char4 [ label = "alpha\nsave(c3),\nwrite(c2,c3)" ];
+	char3 -> char4pad [ label = "=" ];
 
 	char4 -> block [ label = "alpha\nsave(c4),\nwrite(c3,c4)" ];
+	char4 -> block [ label = "=" ];
+
+	char4pad -> block [ label = "=" ];
 
 	block -> end [ label = "EOF" ];
 }
