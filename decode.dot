@@ -13,7 +13,7 @@ digraph decode {
 
 	start -> block;
 
-	block -> char1 [ label = "*" ];
+	block -> char1 [ label = "*\nputback(c)" ];
 
 	char1 -> char2 [ label = "alpha\nsave(c1)" ];
 	char1 -> illegal [ label = "*" ];
