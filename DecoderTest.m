@@ -8,6 +8,14 @@ typedef NS_ENUM(int, GenericBase64DecoderState) {
 	GenericBase64DecoderStateChar2,
 	GenericBase64DecoderStateChar3,
 	GenericBase64DecoderStateChar4,
+	GenericBase64DecoderStateIllegal,
+};
+
+
+typedef NS_ENUM(int, GenericBase64DecoderToken) {
+	GenericBase64DecoderTokenAlphaFirst = 0,
+	GenericBase64DecoderTokenAlphaLast = 63,
+	GenericBase64DecoderTokenEOF = 64,
 };
 
 
@@ -86,7 +94,45 @@ typedef NS_ENUM(int, GenericBase64DecoderState) {
 	XCTAssertEqual(self.decoder.c4, 4);
 }
 
+- (void)testChar1Illegal {
+	self.decoder.state = GenericBase64DecoderStateChar1;
+	[self.decoder input:GenericBase64DecoderTokenEOF];
+	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateIllegal);
+	XCTAssertEqual(self.decoder.c1, 0);
+}
+
+- (void)testChar2Illegal {
+	self.decoder.state = GenericBase64DecoderStateChar2;
+	[self.decoder input:GenericBase64DecoderTokenEOF];
+	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateIllegal);
+	XCTAssertEqual(self.decoder.c2, 0);
+}
+
+- (void)testChar3Illegal {
+	self.decoder.state = GenericBase64DecoderStateChar3;
+	[self.decoder input:GenericBase64DecoderTokenEOF];
+	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateIllegal);
+	XCTAssertEqual(self.decoder.c3, 0);
+}
+
+- (void)testChar4Illegal {
+	self.decoder.state = GenericBase64DecoderStateChar4;
+	[self.decoder input:GenericBase64DecoderTokenEOF];
+	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateIllegal);
+	XCTAssertEqual(self.decoder.c4, 0);
+}
+
+- (void)testIllegalIsTerminal {
+	self.decoder.state = GenericBase64DecoderStateIllegal;
+	[self.decoder input:2];
+	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateIllegal);
+}
+
 @end
+
+
+// internal
+#define TokenIsAlpha(t)	((t) >= GenericBase64DecoderTokenAlphaFirst && (t) <= GenericBase64DecoderTokenAlphaLast)
 
 
 @implementation GenericBase64Decoder
@@ -96,28 +142,42 @@ typedef NS_ENUM(int, GenericBase64DecoderState) {
 		case GenericBase64DecoderStateBlock:
 			self.state = GenericBase64DecoderStateChar1;
 			[self input:token];
-			break;
+			return;
 
 		case GenericBase64DecoderStateChar1:
-			self.c1 = token;
-			self.state = GenericBase64DecoderStateChar2;
+			if (TokenIsAlpha(token)) {
+				self.c1 = token;
+				self.state = GenericBase64DecoderStateChar2;
+				return;
+			}
 			break;
 
 		case GenericBase64DecoderStateChar2:
-			self.c2 = token;
-			self.state = GenericBase64DecoderStateChar3;
+			if (TokenIsAlpha(token)) {
+				self.c2 = token;
+				self.state = GenericBase64DecoderStateChar3;
+				return;
+			}
 			break;
 
 		case GenericBase64DecoderStateChar3:
-			self.c3 = token;
-			self.state = GenericBase64DecoderStateChar4;
+			if (TokenIsAlpha(token)) {
+				self.c3 = token;
+				self.state = GenericBase64DecoderStateChar4;
+				return;
+			}
 			break;
 
 		case GenericBase64DecoderStateChar4:
-			self.c4 = token;
-			self.state = GenericBase64DecoderStateBlock;
+			if (TokenIsAlpha(token)) {
+				self.c4 = token;
+				self.state = GenericBase64DecoderStateBlock;
+				return;
+			}
 			break;
 	}
+
+	self.state = GenericBase64DecoderStateIllegal;
 }
 
 @end
