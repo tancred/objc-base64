@@ -6,7 +6,11 @@ digraph decode {
 	// internal states
 	node [ style = filled; fillcolor = white; color = black; fontcolor = black; ];
 	block;
-	char1, char2, char3, char4, char4pad;
+	char1, char2, char3, char4;
+
+	// optional states
+	//node [ style = dashed; fillcolor = white; color = black; fontcolor = black; ];
+	//char4pad;
 
 	// unspecified states
 	node [ style = filled; fillcolor = cyan; color = black; fontcolor = black; ];
@@ -22,15 +26,17 @@ digraph decode {
 	char2 -> illegal [ label = "*" ];
 
 	char3 -> char4 [ label = "alpha\nsave(c3),\nwrite(c2,c3)" ];
-	char3 -> char4pad [ label = "=" ];
+	char3 -> block [ label = "EOF\nputback(c)" ]
+	//char3 -> char4pad [ label = "=", style = dashed; ];
 	char3 -> illegal [ label = "*" ];
 
 	char4 -> block [ label = "alpha\nsave(c4),\nwrite(c3,c4)" ];
-	char4 -> block [ label = "=" ];
+	char4 -> block [ label = "EOF\nputback(c)" ]
+	//char4 -> block [ label = "=\nputback(EOF)", style = dashed; ];
 	char4 -> illegal [ label = "*" ];
 
-	char4pad -> block [ label = "=" ];
-	char4pad -> illegal [ label = "*" ];
+	//char4pad -> block [ label = "=\nputback(EOF)", style = dashed; ];
+	//char4pad -> illegal [ label = "*" ];
 
 	block -> end [ label = "EOF" ];
 }
