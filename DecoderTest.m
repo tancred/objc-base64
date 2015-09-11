@@ -9,6 +9,7 @@ typedef NS_ENUM(int, GenericBase64DecoderState) {
 	GenericBase64DecoderStateChar3,
 	GenericBase64DecoderStateChar4,
 	GenericBase64DecoderStateIllegal,
+	GenericBase64DecoderStateEnd,
 };
 
 
@@ -94,6 +95,26 @@ typedef NS_ENUM(int, GenericBase64DecoderToken) {
 	XCTAssertEqual(self.decoder.c4, 4);
 }
 
+- (void)testBlockToEndOnEOF {
+	self.decoder.state = GenericBase64DecoderStateBlock;
+	[self.decoder input:GenericBase64DecoderTokenEOF];
+	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateEnd);
+}
+
+- (void)testChar3ToEndOnEOF {
+	self.decoder.state = GenericBase64DecoderStateChar3;
+	[self.decoder input:GenericBase64DecoderTokenEOF];
+	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateEnd);
+	XCTAssertEqual(self.decoder.c3, 0);
+}
+
+- (void)testChar4ToEndOnEOF {
+	self.decoder.state = GenericBase64DecoderStateChar4;
+	[self.decoder input:GenericBase64DecoderTokenEOF];
+	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateEnd);
+	XCTAssertEqual(self.decoder.c4, 0);
+}
+
 - (void)testChar1Illegal {
 	self.decoder.state = GenericBase64DecoderStateChar1;
 	[self.decoder input:GenericBase64DecoderTokenEOF];
@@ -110,14 +131,14 @@ typedef NS_ENUM(int, GenericBase64DecoderToken) {
 
 - (void)testChar3Illegal {
 	self.decoder.state = GenericBase64DecoderStateChar3;
-	[self.decoder input:GenericBase64DecoderTokenEOF];
+	[self.decoder input:65];
 	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateIllegal);
 	XCTAssertEqual(self.decoder.c3, 0);
 }
 
 - (void)testChar4Illegal {
 	self.decoder.state = GenericBase64DecoderStateChar4;
-	[self.decoder input:GenericBase64DecoderTokenEOF];
+	[self.decoder input:65];
 	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateIllegal);
 	XCTAssertEqual(self.decoder.c4, 0);
 }
@@ -126,6 +147,12 @@ typedef NS_ENUM(int, GenericBase64DecoderToken) {
 	self.decoder.state = GenericBase64DecoderStateIllegal;
 	[self.decoder input:2];
 	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateIllegal);
+}
+
+- (void)testEndIsTerminal {
+	self.decoder.state = GenericBase64DecoderStateEnd;
+	[self.decoder input:2];
+	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateEnd);
 }
 
 @end
@@ -140,6 +167,10 @@ typedef NS_ENUM(int, GenericBase64DecoderToken) {
 - (void)input:(int)token {
 	switch (self.state) {
 		case GenericBase64DecoderStateBlock:
+			if (token == GenericBase64DecoderTokenEOF) {
+				self.state = GenericBase64DecoderStateEnd;
+				return;
+			}
 			self.state = GenericBase64DecoderStateChar1;
 			[self input:token];
 			return;
@@ -165,6 +196,10 @@ typedef NS_ENUM(int, GenericBase64DecoderToken) {
 				self.c3 = token;
 				self.state = GenericBase64DecoderStateChar4;
 				return;
+			} else if (token == GenericBase64DecoderTokenEOF) {
+				self.state = GenericBase64DecoderStateBlock;
+				[self input:token];
+				return;
 			}
 			break;
 
@@ -173,8 +208,17 @@ typedef NS_ENUM(int, GenericBase64DecoderToken) {
 				self.c4 = token;
 				self.state = GenericBase64DecoderStateBlock;
 				return;
+			} else if (token == GenericBase64DecoderTokenEOF) {
+				self.state = GenericBase64DecoderStateBlock;
+				[self input:token];
+				return;
 			}
 			break;
+
+		case GenericBase64DecoderStateIllegal:
+			/* intentional fallthrough */
+		case GenericBase64DecoderStateEnd:
+			return;
 	}
 
 	self.state = GenericBase64DecoderStateIllegal;
