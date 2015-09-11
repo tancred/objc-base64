@@ -10,13 +10,15 @@ default: $(PROGS)
 
 tests: \
 	tests.o \
-	DecoderTest.o
+	DecoderTest.o \
+	GenericBase64Decoder.o
 	$(CC) -o $@ $(CFLAGS) $^ -framework Foundation -framework XCTest
 
 tests.o: \
 	tests.m
 
-DecoderTest.o: DecoderTest.m
+DecoderTest.o: DecoderTest.m GenericBase64Decoder.h
+GenericBase64Decoder.o: GenericBase64Decoder.m GenericBase64Decoder.h
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $<

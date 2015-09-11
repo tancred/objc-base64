@@ -1,33 +1,6 @@
 #import <Foundation/Foundation.h>
 #import <XCTest/XCTest.h>
-
-
-typedef NS_ENUM(int, GenericBase64DecoderState) {
-	GenericBase64DecoderStateBlock,
-	GenericBase64DecoderStateChar1,
-	GenericBase64DecoderStateChar2,
-	GenericBase64DecoderStateChar3,
-	GenericBase64DecoderStateChar4,
-	GenericBase64DecoderStateIllegal,
-	GenericBase64DecoderStateEnd,
-};
-
-
-typedef NS_ENUM(int, GenericBase64DecoderToken) {
-	GenericBase64DecoderTokenAlphaFirst = 0,
-	GenericBase64DecoderTokenAlphaLast = 63,
-	GenericBase64DecoderTokenEOF = 64,
-};
-
-
-@interface GenericBase64Decoder : NSObject
-@property GenericBase64DecoderState state;
-@property int c1;
-@property int c2;
-@property int c3;
-@property int c4;
-- (void)input:(int)token;
-@end
+#import "GenericBase64Decoder.h"
 
 
 @interface DecoderTest : XCTestCase
@@ -153,75 +126,6 @@ typedef NS_ENUM(int, GenericBase64DecoderToken) {
 	self.decoder.state = GenericBase64DecoderStateEnd;
 	[self.decoder input:2];
 	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateEnd);
-}
-
-@end
-
-
-// internal
-#define TokenIsAlpha(t)	((t) >= GenericBase64DecoderTokenAlphaFirst && (t) <= GenericBase64DecoderTokenAlphaLast)
-
-
-@implementation GenericBase64Decoder
-
-- (void)input:(int)token {
-	switch (self.state) {
-		case GenericBase64DecoderStateBlock:
-			if (token == GenericBase64DecoderTokenEOF) {
-				self.state = GenericBase64DecoderStateEnd;
-				return;
-			}
-			self.state = GenericBase64DecoderStateChar1;
-			[self input:token];
-			return;
-
-		case GenericBase64DecoderStateChar1:
-			if (TokenIsAlpha(token)) {
-				self.c1 = token;
-				self.state = GenericBase64DecoderStateChar2;
-				return;
-			}
-			break;
-
-		case GenericBase64DecoderStateChar2:
-			if (TokenIsAlpha(token)) {
-				self.c2 = token;
-				self.state = GenericBase64DecoderStateChar3;
-				return;
-			}
-			break;
-
-		case GenericBase64DecoderStateChar3:
-			if (TokenIsAlpha(token)) {
-				self.c3 = token;
-				self.state = GenericBase64DecoderStateChar4;
-				return;
-			} else if (token == GenericBase64DecoderTokenEOF) {
-				self.state = GenericBase64DecoderStateBlock;
-				[self input:token];
-				return;
-			}
-			break;
-
-		case GenericBase64DecoderStateChar4:
-			if (TokenIsAlpha(token)) {
-				self.c4 = token;
-				self.state = GenericBase64DecoderStateBlock;
-				return;
-			} else if (token == GenericBase64DecoderTokenEOF) {
-				self.state = GenericBase64DecoderStateBlock;
-				[self input:token];
-				return;
-			}
-			break;
-
-		case GenericBase64DecoderStateIllegal:
-			/* intentional fallthrough */
-		case GenericBase64DecoderStateEnd:
-			return;
-	}
-
-	self.state = GenericBase64DecoderStateIllegal;
 }
 
 @end
