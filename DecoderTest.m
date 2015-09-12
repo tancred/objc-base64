@@ -128,4 +128,42 @@
 	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateEnd);
 }
 
+- (void)testDecode2CharBlock {
+	__block NSMutableData *decoded = [NSMutableData new];
+	self.decoder.output = ^(char *bytes, NSUInteger len) {
+		[decoded appendBytes:bytes length:len];
+	};
+	[self.decoder input:33];
+	[self.decoder input:33];
+	[self.decoder input:GenericBase64DecoderTokenEOF];
+
+	XCTAssertEqualObjects(decoded, [NSData dataWithBytes:"\x86" length:1]);
+}
+
+- (void)testDecode3CharBlock {
+	__block NSMutableData *decoded = [NSMutableData new];
+	self.decoder.output = ^(char *bytes, NSUInteger len) {
+		[decoded appendBytes:bytes length:len];
+	};
+	[self.decoder input:33];
+	[self.decoder input:33];
+	[self.decoder input:33];
+	[self.decoder input:GenericBase64DecoderTokenEOF];
+
+	XCTAssertEqualObjects(decoded, [NSData dataWithBytes:"\x86\x18" length:2]);
+}
+
+- (void)testDecode4CharBlock {
+	__block NSMutableData *decoded = [NSMutableData new];
+	self.decoder.output = ^(char *bytes, NSUInteger len) {
+		[decoded appendBytes:bytes length:len];
+	};
+	[self.decoder input:33];
+	[self.decoder input:33];
+	[self.decoder input:33];
+	[self.decoder input:33];
+
+	XCTAssertEqualObjects(decoded, [NSData dataWithBytes:"\x86\x18\x61" length:3]);
+}
+
 @end

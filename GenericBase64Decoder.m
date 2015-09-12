@@ -29,6 +29,8 @@
 			if (TokenIsAlpha(token)) {
 				self.c2 = token;
 				self.state = GenericBase64DecoderStateChar3;
+				char x = self.c1 << 2 | self.c2 >> 4;
+				if (self.output) self.output(&x, 1);
 				return;
 			}
 			break;
@@ -37,6 +39,8 @@
 			if (TokenIsAlpha(token)) {
 				self.c3 = token;
 				self.state = GenericBase64DecoderStateChar4;
+				char x = self.c2 << 4 | self.c3 >> 2;
+				if (self.output) self.output(&x, 1);
 				return;
 			} else if (token == GenericBase64DecoderTokenEOF) {
 				self.state = GenericBase64DecoderStateBlock;
@@ -49,6 +53,8 @@
 			if (TokenIsAlpha(token)) {
 				self.c4 = token;
 				self.state = GenericBase64DecoderStateBlock;
+				char x = self.c3 << 6 | self.c4;
+				if (self.output) self.output(&x, 1);
 				return;
 			} else if (token == GenericBase64DecoderTokenEOF) {
 				self.state = GenericBase64DecoderStateBlock;

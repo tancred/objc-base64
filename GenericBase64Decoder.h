@@ -23,5 +23,6 @@ typedef NS_ENUM(int, GenericBase64DecoderToken) {
 @property int c2;
 @property int c3;
 @property int c4;
+@property(copy) void (^output)(char *bytes, NSUInteger len);
 - (void)input:(int)token;
 @end
