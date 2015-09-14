@@ -11,6 +11,8 @@ default: $(PROGS)
 tests: \
 	tests.o \
 	DecoderTest.o \
+	NSDataDecoderTest.o \
+	NSData+Base64.o \
 	GenericBase64Decoder.o
 	$(CC) -o $@ $(CFLAGS) $^ -framework Foundation -framework XCTest
 
@@ -18,7 +20,9 @@ tests.o: \
 	tests.m
 
 DecoderTest.o: DecoderTest.m GenericBase64Decoder.h
+NSDataDecoderTest.o: NSDataDecoderTest.m NSData+Base64.h
 GenericBase64Decoder.o: GenericBase64Decoder.m GenericBase64Decoder.h
+NSData+Base64.o: NSData+Base64.m NSData+Base64.h GenericBase64Decoder.h
 
 %.o: %.c
 	$(CC) -c $(CFLAGS) $<
