@@ -2,7 +2,7 @@
 #import "GenericBase64Decoder.h"
 
 
-static int base64value(char c);
+static int ByteToBase64Token(char c);
 
 
 @implementation NSData (Base64)
@@ -19,7 +19,7 @@ static int base64value(char c);
 
 	const char *encoded = [self bytes];
 	for (NSUInteger i=0; i<length; i++) {
-		[decoder input:base64value(encoded[i])];
+		[decoder input:ByteToBase64Token(encoded[i])];
 		if (decoder.state == GenericBase64DecoderStateIllegal) break;
 	}
 
@@ -31,7 +31,7 @@ static int base64value(char c);
 @end
 
 
-static int base64value(char c) {
+static int ByteToBase64Token(char c) {
 	if (c >= 'A' && c <= 'Z') return c - 'A';
 	if (c >= 'a' && c <= 'z') return c - 'a' + 26;
 	if (c >= '0' && c <= '9') return c - '0' + 52;
