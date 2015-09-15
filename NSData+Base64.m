@@ -7,6 +7,10 @@ static int ByteToBase64Token(char c);
 
 @implementation NSData (Base64)
 
+- (NSData *)dataByDecodingBase64 {
+	return [self dataByDecodingBase64:NULL];
+}
+
 - (NSData *)dataByDecodingBase64:(NSError **)error {
 	NSUInteger length = [self length];
 	if (length == 0) return [NSData data];
