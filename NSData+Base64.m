@@ -27,6 +27,11 @@ static int ByteToBase64Token(char c);
 		if (decoder.state == GenericBase64DecoderStateIllegal) break;
 	}
 
+	if (decoder.state == GenericBase64DecoderStateIllegal) {
+		if (error) *error = decoder.error;
+		return nil;
+	}
+
 	[decoder input:GenericBase64DecoderTokenEOF];
 
 	return decoded;
