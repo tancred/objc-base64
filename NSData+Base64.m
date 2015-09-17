@@ -41,5 +41,5 @@ static int ByteToBase64Token(char c) {
 	if (c >= '0' && c <= '9') return c - '0' + 52;
 	if (c == '+') return 62;
 	if (c == '/') return 63;
-	return GenericBase64DecoderTokenOther;
+	return GenericBase64DecoderTokenUnknown;
 }

@@ -14,7 +14,7 @@ typedef NS_ENUM(int, GenericBase64DecoderToken) {
 	GenericBase64DecoderTokenAlphaFirst = 0,
 	GenericBase64DecoderTokenAlphaLast = 63,
 	GenericBase64DecoderTokenEOF = 64,
-	GenericBase64DecoderTokenOther = -1,
+	GenericBase64DecoderTokenUnknown = -1,
 };
 
 
