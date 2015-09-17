@@ -1,6 +1,9 @@
 #import "GenericBase64Decoder.h"
 
 
+NSString *GenericBase64DecoderErrorDomain = @"GenericBase64DecoderErrorDomain";
+
+
 @interface GenericBase64Decoder ()
 @property(nonatomic) char *decoded;
 @property uint8_t ndecoded;
@@ -100,5 +103,3 @@
 }
 
 @end
-
-NSString *GenericBase64DecoderErrorDomain = @"GenericBase64DecoderErrorDomain";

@@ -18,16 +18,18 @@ typedef NS_ENUM(int, GenericBase64DecoderToken) {
 };
 
 
+extern NSString *GenericBase64DecoderErrorDomain;
+
+typedef NS_ENUM(NSInteger, GenericBase64DecoderErrorCode) {
+	GenericBase64DecoderErrorCodeAlpha,
+	GenericBase64DecoderErrorCodeEOF,
+	GenericBase64DecoderErrorCodeUnknown,
+};
+
+
 @interface GenericBase64Decoder : NSObject
 @property GenericBase64DecoderState state;
 @property(copy) void (^output)(char *bytes, NSUInteger len);
 @property(copy) NSError *error;
 - (void)input:(int)token;
 @end
-
-extern NSString *GenericBase64DecoderErrorDomain;
-typedef NS_ENUM(NSInteger, GenericBase64DecoderErrorCode) {
-	GenericBase64DecoderErrorCodeAlpha,
-	GenericBase64DecoderErrorCodeEOF,
-	GenericBase64DecoderErrorCodeUnknown,
-};
