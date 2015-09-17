@@ -3,6 +3,12 @@
 #import "GenericBase64Decoder.h"
 
 
+#define AssertIllegalTokenError(e,c) do { \
+	XCTAssertEqualObjects([(e) domain], GenericBase64DecoderErrorDomain); \
+	XCTAssertEqual([(e) code], (c)); \
+} while (0)
+
+
 @interface DecoderTest : XCTestCase
 @property(strong) GenericBase64Decoder *decoder;
 @end
@@ -77,34 +83,59 @@
 	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateEnd);
 }
 
-- (void)testChar1Illegal {
+- (void)testChar1ToIllegal {
 	self.decoder.state = GenericBase64DecoderStateChar1;
 	[self.decoder input:GenericBase64DecoderTokenEOF];
 	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateIllegal);
+	AssertIllegalTokenError(self.decoder.error, GenericBase64DecoderErrorCodeEOF);
+
+	self.decoder.state = GenericBase64DecoderStateChar1;
+	[self.decoder input:GenericBase64DecoderTokenUnknown];
+	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateIllegal);
+	AssertIllegalTokenError(self.decoder.error, GenericBase64DecoderErrorCodeUnknown);
 }
 
-- (void)testChar2Illegal {
+- (void)testChar2ToIllegal {
 	self.decoder.state = GenericBase64DecoderStateChar2;
 	[self.decoder input:GenericBase64DecoderTokenEOF];
 	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateIllegal);
+	AssertIllegalTokenError(self.decoder.error, GenericBase64DecoderErrorCodeEOF);
+
+	self.decoder.state = GenericBase64DecoderStateChar2;
+	[self.decoder input:GenericBase64DecoderTokenUnknown];
+	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateIllegal);
+	AssertIllegalTokenError(self.decoder.error, GenericBase64DecoderErrorCodeUnknown);
 }
 
-- (void)testChar3Illegal {
+- (void)testChar3ToIllegal {
 	self.decoder.state = GenericBase64DecoderStateChar3;
 	[self.decoder input:65];
 	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateIllegal);
+	AssertIllegalTokenError(self.decoder.error, GenericBase64DecoderErrorCodeUnknown);
 }
 
-- (void)testChar4Illegal {
+- (void)testChar4ToIllegal {
 	self.decoder.state = GenericBase64DecoderStateChar4;
 	[self.decoder input:65];
 	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateIllegal);
+	AssertIllegalTokenError(self.decoder.error, GenericBase64DecoderErrorCodeUnknown);
 }
 
 - (void)testIllegalIsTerminal {
 	self.decoder.state = GenericBase64DecoderStateIllegal;
 	[self.decoder input:2];
 	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateIllegal);
+}
+
+- (void)testIllegalRetainsError {
+	self.decoder.state = GenericBase64DecoderStateChar1;
+	[self.decoder input:GenericBase64DecoderTokenEOF];
+
+	NSError *initialError = self.decoder.error;
+	[self.decoder input:985];
+
+	XCTAssertNotNil(self.decoder.error);
+	XCTAssertEqualObjects(self.decoder.error, initialError);
 }
 
 - (void)testEndIsTerminal {

@@ -91,7 +91,14 @@
 			return;
 	}
 
+	NSInteger errorCode = GenericBase64DecoderErrorCodeUnknown;
+	if (token == GenericBase64DecoderTokenEOF)
+		errorCode = GenericBase64DecoderErrorCodeEOF;
+
+	self.error = [NSError errorWithDomain:GenericBase64DecoderErrorDomain code:errorCode userInfo:nil];
 	self.state = GenericBase64DecoderStateIllegal;
 }
 
 @end
+
+NSString *GenericBase64DecoderErrorDomain = @"GenericBase64DecoderErrorDomain";
