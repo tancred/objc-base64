@@ -31,5 +31,6 @@ typedef NS_ENUM(NSInteger, GenericBase64DecoderErrorCode) {
 @property GenericBase64DecoderState state;
 @property(copy) void (^output)(char *bytes, NSUInteger len);
 @property(copy) NSError *error;
+@property BOOL prohibitEarlyEOF;
 - (void)input:(int)token;
 @end

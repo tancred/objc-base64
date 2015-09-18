@@ -121,6 +121,22 @@
 	AssertIllegalTokenError(self.decoder.error, GenericBase64DecoderErrorCodeUnknown);
 }
 
+- (void)testChar3ToIllegalWhenEOFProhibited {
+	self.decoder.prohibitEarlyEOF = YES;
+	self.decoder.state = GenericBase64DecoderStateChar3;
+	[self.decoder input:GenericBase64DecoderTokenEOF];
+	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateIllegal);
+	AssertIllegalTokenError(self.decoder.error, GenericBase64DecoderErrorCodeEOF);
+}
+
+- (void)testChar4ToIllegalWhenEOFProhibited {
+	self.decoder.prohibitEarlyEOF = YES;
+	self.decoder.state = GenericBase64DecoderStateChar4;
+	[self.decoder input:GenericBase64DecoderTokenEOF];
+	XCTAssertEqual(self.decoder.state, GenericBase64DecoderStateIllegal);
+	AssertIllegalTokenError(self.decoder.error, GenericBase64DecoderErrorCodeEOF);
+}
+
 - (void)testIllegalIsTerminal {
 	self.decoder.state = GenericBase64DecoderStateIllegal;
 	[self.decoder input:2];

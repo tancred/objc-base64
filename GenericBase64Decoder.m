@@ -69,6 +69,7 @@ NSString *GenericBase64DecoderErrorDomain = @"GenericBase64DecoderErrorDomain";
 				self.state = GenericBase64DecoderStateChar4;
 				return;
 			} else if (token == GenericBase64DecoderTokenEOF) {
+				if (self.prohibitEarlyEOF) break;
 				self.state = GenericBase64DecoderStateBlock;
 				[self input:token]; // putback
 				return;
@@ -82,6 +83,7 @@ NSString *GenericBase64DecoderErrorDomain = @"GenericBase64DecoderErrorDomain";
 				self.state = GenericBase64DecoderStateBlock;
 				return;
 			} else if (token == GenericBase64DecoderTokenEOF) {
+				if (self.prohibitEarlyEOF) break;
 				self.state = GenericBase64DecoderStateBlock;
 				[self input:token]; // putback
 				return;
