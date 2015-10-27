@@ -14,6 +14,5 @@ FOUNDATION_EXPORT double ObjcBase64VersionNumber;
 //! Project version string for ObjcBase64.
 FOUNDATION_EXPORT const unsigned char ObjcBase64VersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <ObjcBase64/PublicHeader.h>
-
-
+#import <ObjcBase64/GenericBase64Decoder.h>
+#import <ObjcBase64/NSData+Base64.h>

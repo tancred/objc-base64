@@ -9,7 +9,12 @@
 /* Begin PBXBuildFile section */
 		E96690CA1BDF6DFF0085F1DA /* ObjcBase64.h in Headers */ = {isa = PBXBuildFile; fileRef = E96690C91BDF6DFF0085F1DA /* ObjcBase64.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E96690D11BDF6DFF0085F1DA /* ObjcBase64.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E96690C61BDF6DFF0085F1DA /* ObjcBase64.framework */; settings = {ASSET_TAGS = (); }; };
-		E96690D61BDF6DFF0085F1DA /* ObjcBase64Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = E96690D51BDF6DFF0085F1DA /* ObjcBase64Tests.m */; };
+		E96690E41BDF6F420085F1DA /* GenericBase64Decoder.h in Headers */ = {isa = PBXBuildFile; fileRef = E96690E01BDF6F420085F1DA /* GenericBase64Decoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E96690E51BDF6F420085F1DA /* GenericBase64Decoder.m in Sources */ = {isa = PBXBuildFile; fileRef = E96690E11BDF6F420085F1DA /* GenericBase64Decoder.m */; settings = {ASSET_TAGS = (); }; };
+		E96690E61BDF6F420085F1DA /* NSData+Base64.h in Headers */ = {isa = PBXBuildFile; fileRef = E96690E21BDF6F420085F1DA /* NSData+Base64.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E96690E71BDF6F420085F1DA /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = E96690E31BDF6F420085F1DA /* NSData+Base64.m */; settings = {ASSET_TAGS = (); }; };
+		E96690EA1BDF6FA40085F1DA /* DecoderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E96690E81BDF6FA40085F1DA /* DecoderTest.m */; settings = {ASSET_TAGS = (); }; };
+		E96690EB1BDF6FA40085F1DA /* NSDataDecoderTest.m in Sources */ = {isa = PBXBuildFile; fileRef = E96690E91BDF6FA40085F1DA /* NSDataDecoderTest.m */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -27,8 +32,13 @@
 		E96690C91BDF6DFF0085F1DA /* ObjcBase64.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjcBase64.h; sourceTree = "<group>"; };
 		E96690CB1BDF6DFF0085F1DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E96690D01BDF6DFF0085F1DA /* ObjcBase64Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ObjcBase64Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E96690D51BDF6DFF0085F1DA /* ObjcBase64Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjcBase64Tests.m; sourceTree = "<group>"; };
 		E96690D71BDF6DFF0085F1DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E96690E01BDF6F420085F1DA /* GenericBase64Decoder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenericBase64Decoder.h; sourceTree = "<group>"; };
+		E96690E11BDF6F420085F1DA /* GenericBase64Decoder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenericBase64Decoder.m; sourceTree = "<group>"; };
+		E96690E21BDF6F420085F1DA /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		E96690E31BDF6F420085F1DA /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
+		E96690E81BDF6FA40085F1DA /* DecoderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DecoderTest.m; sourceTree = "<group>"; };
+		E96690E91BDF6FA40085F1DA /* NSDataDecoderTest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSDataDecoderTest.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +82,10 @@
 			isa = PBXGroup;
 			children = (
 				E96690C91BDF6DFF0085F1DA /* ObjcBase64.h */,
+				E96690E01BDF6F420085F1DA /* GenericBase64Decoder.h */,
+				E96690E11BDF6F420085F1DA /* GenericBase64Decoder.m */,
+				E96690E21BDF6F420085F1DA /* NSData+Base64.h */,
+				E96690E31BDF6F420085F1DA /* NSData+Base64.m */,
 				E96690CB1BDF6DFF0085F1DA /* Info.plist */,
 			);
 			path = ObjcBase64;
@@ -80,7 +94,8 @@
 		E96690D41BDF6DFF0085F1DA /* ObjcBase64Tests */ = {
 			isa = PBXGroup;
 			children = (
-				E96690D51BDF6DFF0085F1DA /* ObjcBase64Tests.m */,
+				E96690E81BDF6FA40085F1DA /* DecoderTest.m */,
+				E96690E91BDF6FA40085F1DA /* NSDataDecoderTest.m */,
 				E96690D71BDF6DFF0085F1DA /* Info.plist */,
 			);
 			path = ObjcBase64Tests;
@@ -93,7 +108,9 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E96690E41BDF6F420085F1DA /* GenericBase64Decoder.h in Headers */,
 				E96690CA1BDF6DFF0085F1DA /* ObjcBase64.h in Headers */,
+				E96690E61BDF6F420085F1DA /* NSData+Base64.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -193,6 +210,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E96690E51BDF6F420085F1DA /* GenericBase64Decoder.m in Sources */,
+				E96690E71BDF6F420085F1DA /* NSData+Base64.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -200,7 +219,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E96690D61BDF6DFF0085F1DA /* ObjcBase64Tests.m in Sources */,
+				E96690EB1BDF6FA40085F1DA /* NSDataDecoderTest.m in Sources */,
+				E96690EA1BDF6FA40085F1DA /* DecoderTest.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -375,6 +395,7 @@
 				E96690DC1BDF6DFF0085F1DA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		E96690DD1BDF6DFF0085F1DA /* Build configuration list for PBXNativeTarget "ObjcBase64Tests" */ = {
 			isa = XCConfigurationList;
@@ -383,6 +404,7 @@
 				E96690DF1BDF6DFF0085F1DA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
